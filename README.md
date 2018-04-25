@@ -59,6 +59,10 @@ That said, `EquivalentKeyMap` was implemented with performance in mind, and is s
 
 The following benchmark results describe the behavior of `EquivalentMap#get` with keys of varying property lengths. 
 
+>**`EquivalentKeyMap (2 properties) x 2,186,074 ops/sec ±0.52% (90 runs sampled)`**  
+>**`EquivalentKeyMap (8 properties) x 1,366,996 ops/sec ±0.49% (94 runs sampled)`**  
+>**`EquivalentKeyMap (18 properties) x 566,008 ops/sec ±0.77% (89 runs sampled)`**  
+>
 >`JSONStringifyNaiveMap (2 properties) x 1,683,683 ops/sec ±0.61% (89 runs sampled)`  
 >`JSONStringifyNaiveMap (8 properties) x 934,253 ops/sec ±0.52% (91 runs sampled)`  
 >`JSONStringifyNaiveMap (18 properties) x 568,055 ops/sec ±0.56% (93 runs sampled)`  
@@ -78,10 +82,6 @@ The following benchmark results describe the behavior of `EquivalentMap#get` wit
 >`TupleStringifyMap (2 properties) x 837,870 ops/sec ±0.69% (89 runs sampled)`  
 >`TupleStringifyMap (8 properties) x 408,946 ops/sec ±1.19% (89 runs sampled)`  
 >`TupleStringifyMap (18 properties) x 208,670 ops/sec ±0.51% (91 runs sampled)`  
->
->**`EquivalentKeyMap (2 properties) x 2,186,074 ops/sec ±0.52% (90 runs sampled)`**  
->**`EquivalentKeyMap (8 properties) x 1,366,996 ops/sec ±0.49% (94 runs sampled)`**  
->**`EquivalentKeyMap (18 properties) x 566,008 ops/sec ±0.77% (89 runs sampled)`**  
 
 You can run these on your own machine by cloning the repository, installing optional dependencies, and running `npm run benchmark`.
 

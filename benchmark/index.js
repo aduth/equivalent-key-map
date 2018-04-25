@@ -14,12 +14,12 @@ const CHAR_CODE_LOWERCASE_A = 97;
 const suite = new Benchmark.Suite;
 
 [
+	EquivalentKeyMap,
 	JSONStringifyNaiveMap,
 	JSONStringifyOptimizedMap,
 	JSONStableStringifyMap,
 	FasterStableStringifyMap,
 	TupleStringifyMap,
-	EquivalentKeyMap,
 ].forEach( ( Impl ) => {
 	const map = new Impl;
 
