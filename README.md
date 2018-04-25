@@ -53,7 +53,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 There is inevitably some overhead in tracking object and array references deeply, contrasted with the standard Map object. This is a compromise you should consider when deciding whether you need deep key equality behavior.
 
-That said, `EquivalentKeyMap` was implemented with performance in mind, and is significantly faster — and importantaly, more accurate — than a number of [alternative naive approaches](https://github.com/aduth/equivalent-key-map/tree/master/benchmark/impl).
+That said, `EquivalentKeyMap` was implemented with performance in mind, and is significantly faster — and importantaly, more [correct](https://github.com/aduth/equivalent-key-map/blob/210f42bbd431c7c10da33d310cf56ef3b3ca96e7/test/index.js#L67-L71) — than a number of [alternative naive approaches](https://github.com/aduth/equivalent-key-map/tree/master/benchmark/impl).
 
 ### Benchmarks
 
