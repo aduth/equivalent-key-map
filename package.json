@@ -1,0 +1,55 @@
+{
+  "name": "equivalent-key-map",
+  "version": "0.1.0",
+  "description": "A Map variant which allows for equivalent (deeply equal) object and array keys",
+  "main": "equivalent-key-map.js",
+  "files": [
+    "equivalent-key-map.js",
+    "dist"
+  ],
+  "scripts": {
+    "test:lint": "eslint .",
+    "pretest:unit": "rollup -c",
+    "test:unit": "mocha",
+    "test-watch": "npm run test:unit -- --watch --watch-extensions js",
+    "test": "npm-run-all --parallel test:*",
+    "build": "NODE_ENV=production rollup -c",
+    "build-watch": "npm run build -- --watch",
+    "postbuild": "npm run minify",
+    "minify": "uglifyjs dist/equivalent-key-map.js -c -m > dist/equivalent-key-map.min.js",
+    "prepublishOnly": "npm run build",
+    "prebenchmark": "npm run build",
+    "benchmark": "node benchmark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aduth/equivalent-key-map.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aduth/equivalent-key-map/issues"
+  },
+  "author": {
+    "name": "Andrew Duthie",
+    "email": "andrew@andrewduthie.com",
+    "url": "http://andrewduthie.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@aduth/eslint-config": "^2.0.0",
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-plugin-jsdoc": "^3.6.3",
+    "mocha": "^5.1.1",
+    "npm-run-all": "^4.1.2",
+    "rollup": "^0.58.2",
+    "rollup-plugin-babel": "^4.0.0-beta.4",
+    "uglify-js": "^3.3.22"
+  },
+  "optionalDependencies": {
+    "benchmark": "^2.1.4",
+    "faster-stable-stringify": "^1.0.0",
+    "json-stable-stringify": "^1.0.1"
+  }
+}
