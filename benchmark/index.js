@@ -7,6 +7,7 @@ const JSONStringifyOptimizedMap = require( './impl/json-stringify-optimized' );
 const JSONStableStringifyMap = require( './impl/json-stable-stringify' );
 const FasterStableStringifyMap = require( './impl/faster-stable-stringify' );
 const TupleStringifyMap = require( './impl/tuple-stringify' );
+const StableQuerystringMap = require( './impl/stable-querystring' );
 const EquivalentKeyMap = require( '../' );
 
 const CHAR_CODE_LOWERCASE_A = 97;
@@ -20,6 +21,7 @@ const suite = new Benchmark.Suite;
 	JSONStableStringifyMap,
 	FasterStableStringifyMap,
 	TupleStringifyMap,
+	StableQuerystringMap,
 ].forEach( ( Impl ) => {
 	const map = new Impl;
 

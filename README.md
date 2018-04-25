@@ -82,6 +82,10 @@ The following benchmark results describe the behavior of `EquivalentMap#get` wit
 >`TupleStringifyMap (2 properties) x 837,870 ops/sec ±0.69% (89 runs sampled)`  
 >`TupleStringifyMap (8 properties) x 408,946 ops/sec ±1.19% (89 runs sampled)`  
 >`TupleStringifyMap (18 properties) x 208,670 ops/sec ±0.51% (91 runs sampled)`  
+>
+>`StableQuerystringMap (2 properties) x 1,023,860 ops/sec ±1.06% (88 runs sampled)`  
+>`StableQuerystringMap (8 properties) x 347,168 ops/sec ±0.85% (92 runs sampled)`  
+>`StableQuerystringMap (18 properties) x 158,737 ops/sec ±0.44% (91 runs sampled)`  
 
 You can run these on your own machine by cloning the repository, installing optional dependencies, and running `npm run benchmark`.
 
