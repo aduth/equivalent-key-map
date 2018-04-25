@@ -38,16 +38,22 @@ class EquivalentKeyMap {
 		// Sort keys to ensure stable assignment into tree.
 		const properties = Object.keys( key ).sort();
 
+		// Ensure objects with numeric keys don't match tracked arrays.
+		const isArray = Array.isArray( key );
+
 		for ( let i = 0; i < properties.length; i++ ) {
-			const property = properties[ i ];
+			let property = properties[ i ];
+			const propertyValue = key[ property ];
+
+			if ( isArray ) {
+				property = '_ekm_index_' + i;
+			}
 
 			if ( ! map.has( property ) ) {
 				map.set( property, new EquivalentKeyMap );
 			}
 
 			map = map.get( property );
-
-			const propertyValue = key[ property ];
 
 			if ( ! map.has( propertyValue ) ) {
 				map.set( propertyValue, new EquivalentKeyMap );
@@ -79,15 +85,23 @@ class EquivalentKeyMap {
 		// Sort keys to ensure stable retrieval from tree.
 		const properties = Object.keys( key ).sort();
 
+		// Ensure objects with numeric keys don't match tracked arrays.
+		const isArray = Array.isArray( key );
+
 		for ( let i = 0; i < properties.length; i++ ) {
-			const property = properties[ i ];
+			let property = properties[ i ];
+			const propertyValue = key[ property ];
+
+			if ( isArray ) {
+				property = '_ekm_index_' + i;
+			}
 
 			map = map.get( property );
 			if ( map === undefined ) {
 				return;
 			}
 
-			map = map.get( key[ property ] );
+			map = map.get( propertyValue );
 			if ( map === undefined ) {
 				return;
 			}

@@ -59,33 +59,33 @@ That said, `EquivalentKeyMap` was implemented with performance in mind, and is s
 
 The following benchmark results describe the behavior of `EquivalentMap#get` with keys of varying property lengths. 
 
->**`EquivalentKeyMap (2 properties) x 2,186,074 ops/sec ±0.52% (90 runs sampled)`**  
->**`EquivalentKeyMap (8 properties) x 1,366,996 ops/sec ±0.49% (94 runs sampled)`**  
->**`EquivalentKeyMap (18 properties) x 566,008 ops/sec ±0.77% (89 runs sampled)`**  
+>**`EquivalentKeyMap (2 properties) x 2,419,300 ops/sec ±1.37% (85 runs sampled)`**  
+>**`EquivalentKeyMap (8 properties) x 1,362,012 ops/sec ±0.40% (90 runs sampled)`**  
+>**`EquivalentKeyMap (18 properties) x 569,431 ops/sec ±0.93% (88 runs sampled)`**  
 >
->`JSONStringifyNaiveMap (2 properties) x 1,683,683 ops/sec ±0.61% (89 runs sampled)`  
->`JSONStringifyNaiveMap (8 properties) x 934,253 ops/sec ±0.52% (91 runs sampled)`  
->`JSONStringifyNaiveMap (18 properties) x 568,055 ops/sec ±0.56% (93 runs sampled)`  
+>`JSONStringifyNaiveMap (2 properties) x 1,958,910 ops/sec ±0.33% (94 runs sampled)`  
+>`JSONStringifyNaiveMap (8 properties) x 1,038,380 ops/sec ±0.34% (94 runs sampled)`  
+>`JSONStringifyNaiveMap (18 properties) x 600,017 ops/sec ±0.39% (91 runs sampled)`  
 >
->`JSONStringifyOptimizedMap (2 properties) x 1,971,482 ops/sec ±1.03% (90 runs sampled)`  
->`JSONStringifyOptimizedMap (8 properties) x 1,021,981 ops/sec ±0.56% (90 runs sampled)`  
->`JSONStringifyOptimizedMap (18 properties) x 596,477 ops/sec ±0.52% (93 runs sampled)`  
+>`JSONStringifyOptimizedMap (2 properties) x 2,143,323 ops/sec ±0.36% (94 runs sampled)`  
+>`JSONStringifyOptimizedMap (8 properties) x 1,088,846 ops/sec ±0.51% (92 runs sampled)`  
+>`JSONStringifyOptimizedMap (18 properties) x 627,801 ops/sec ±0.31% (91 runs sampled)`  
 >
->`JSONStableStringifyMap (2 properties) x 290,168 ops/sec ±0.96% (86 runs sampled)`  
->`JSONStableStringifyMap (8 properties) x 130,502 ops/sec ±0.48% (89 runs sampled)`  
->`JSONStableStringifyMap (18 properties) x 63,924 ops/sec ±1.00% (93 runs sampled)`  
+>`JSONStableStringifyMap (2 properties) x 279,919 ops/sec ±0.91% (85 runs sampled)`  
+>`JSONStableStringifyMap (8 properties) x 129,635 ops/sec ±0.55% (93 runs sampled)`  
+>`JSONStableStringifyMap (18 properties) x 64,372 ops/sec ±0.40% (94 runs sampled)`  
 >
->`FasterStableStringifyMap (2 properties) x 347,172 ops/sec ±0.85% (80 runs sampled)`  
->`FasterStableStringifyMap (8 properties) x 174,823 ops/sec ±0.60% (90 runs sampled)`  
->`FasterStableStringifyMap (18 properties) x 89,231 ops/sec ±0.39% (93 runs sampled)`  
+>`FasterStableStringifyMap (2 properties) x 383,185 ops/sec ±0.79% (85 runs sampled)`  
+>`FasterStableStringifyMap (8 properties) x 174,948 ops/sec ±0.48% (88 runs sampled)`  
+>`FasterStableStringifyMap (18 properties) x 89,142 ops/sec ±0.46% (94 runs sampled)`  
 >
->`TupleStringifyMap (2 properties) x 837,870 ops/sec ±0.69% (89 runs sampled)`  
->`TupleStringifyMap (8 properties) x 408,946 ops/sec ±1.19% (89 runs sampled)`  
->`TupleStringifyMap (18 properties) x 208,670 ops/sec ±0.51% (91 runs sampled)`  
+>`TupleStringifyMap (2 properties) x 885,499 ops/sec ±0.50% (92 runs sampled)`  
+>`TupleStringifyMap (8 properties) x 404,241 ops/sec ±0.56% (90 runs sampled)`  
+>`TupleStringifyMap (18 properties) x 206,659 ops/sec ±0.74% (93 runs sampled)`  
 >
->`StableQuerystringMap (2 properties) x 1,023,860 ops/sec ±1.06% (88 runs sampled)`  
->`StableQuerystringMap (8 properties) x 347,168 ops/sec ±0.85% (92 runs sampled)`  
->`StableQuerystringMap (18 properties) x 158,737 ops/sec ±0.44% (91 runs sampled)`  
+>`StableQuerystringMap (2 properties) x 920,191 ops/sec ±0.72% (86 runs sampled)`  
+>`StableQuerystringMap (8 properties) x 343,097 ops/sec ±0.40% (92 runs sampled)`  
+>`StableQuerystringMap (18 properties) x 157,483 ops/sec ±0.50% (93 runs sampled)`  
 
 You can run these on your own machine by cloning the repository, installing dependencies, and running `npm run benchmark`.
 

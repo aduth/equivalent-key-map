@@ -20,6 +20,18 @@ describe( 'EquivalentKeyMap', () => {
 		expect( map.get( 'a' ) ).to.equal( 10 );
 	} );
 
+	it( 'should not consider array as equivalent to numeric object keys', () => {
+		const map = new EquivalentKeyMap();
+		map.set( { 0: 'a' }, 10 );
+		expect( map.get( [ 'a' ] ) ).to.be.undefined;
+	} );
+
+	it( 'should not consider numeric object keys as equivalent to array', () => {
+		const map = new EquivalentKeyMap();
+		map.set( [ 'a' ], 10 );
+		expect( map.get( { 0: 'a' } ) ).to.be.undefined;
+	} );
+
 	it( 'accounts for null key', () => {
 		const map = new EquivalentKeyMap();
 		map.set( null, 10 );
