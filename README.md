@@ -87,12 +87,12 @@ The following benchmark results describe the behavior of `EquivalentMap#get` wit
 >`StableQuerystringMap (8 properties) x 347,168 ops/sec ±0.85% (92 runs sampled)`  
 >`StableQuerystringMap (18 properties) x 158,737 ops/sec ±0.44% (91 runs sampled)`  
 
-You can run these on your own machine by cloning the repository, installing optional dependencies, and running `npm run benchmark`.
+You can run these on your own machine by cloning the repository, installing dependencies, and running `npm run benchmark`.
 
 ```
 git clone https://github.com/aduth/equivalent-key-map.git
 cd equivalent-key-map
-npm install --optional
+npm install
 npm run benchmark
 ```
 
