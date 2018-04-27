@@ -29,25 +29,18 @@ class EquivalentKeyMap {
 	set( key, value ) {
 		// Shortcut non-object-like to set on internal Map.
 		if ( key === null || typeof key !== 'object' ) {
-			this._map.set( key, value );
+			this._flatMap.set( key, value );
 			return this;
 		}
-
-		let map = this._tree;
 
 		// Sort keys to ensure stable assignment into tree.
 		const properties = Object.keys( key ).sort();
 
-		// Ensure objects with numeric keys don't match tracked arrays.
-		const isArray = Array.isArray( key );
+		// Tree by type to avoid conflicts on numeric object keys, empty value.
+		let map = Array.isArray( key ) ? this._arrayTreeMap : this._objectTreeMap;
 
 		for ( let i = 0; i < properties.length; i++ ) {
-			let property = properties[ i ];
-			const propertyValue = key[ property ];
-
-			if ( isArray ) {
-				property = '_ekm_index_' + i;
-			}
+			const property = properties[ i ];
 
 			if ( ! map.has( property ) ) {
 				map.set( property, new EquivalentKeyMap );
@@ -55,6 +48,7 @@ class EquivalentKeyMap {
 
 			map = map.get( property );
 
+			const propertyValue = key[ property ];
 			if ( ! map.has( propertyValue ) ) {
 				map.set( propertyValue, new EquivalentKeyMap );
 			}
@@ -77,30 +71,24 @@ class EquivalentKeyMap {
 	get( key ) {
 		// Shortcut non-object-like to get from internal Map.
 		if ( key === null || typeof key !== 'object' ) {
-			return this._map.get( key );
+			return this._flatMap.get( key );
 		}
-
-		let map = this._tree;
 
 		// Sort keys to ensure stable retrieval from tree.
 		const properties = Object.keys( key ).sort();
 
-		// Ensure objects with numeric keys don't match tracked arrays.
-		const isArray = Array.isArray( key );
+		// Tree by type to avoid conflicts on numeric object keys, empty value.
+		let map = Array.isArray( key ) ? this._arrayTreeMap : this._objectTreeMap;
 
 		for ( let i = 0; i < properties.length; i++ ) {
-			let property = properties[ i ];
-			const propertyValue = key[ property ];
-
-			if ( isArray ) {
-				property = '_ekm_index_' + i;
-			}
+			const property = properties[ i ];
 
 			map = map.get( property );
 			if ( map === undefined ) {
 				return;
 			}
 
+			const propertyValue = key[ property ];
 			map = map.get( propertyValue );
 			if ( map === undefined ) {
 				return;
@@ -120,7 +108,7 @@ class EquivalentKeyMap {
 	 */
 	has( key ) {
 		if ( key === null || typeof key !== 'object' ) {
-			return this._map.has( key );
+			return this._flatMap.has( key );
 		}
 
 		return Boolean( this.get( key ) );
@@ -150,8 +138,9 @@ class EquivalentKeyMap {
 	 * Removes all elements.
 	 */
 	clear() {
-		this._map = new Map;
-		this._tree = new Map;
+		this._flatMap = new Map;
+		this._arrayTreeMap = new Map;
+		this._objectTreeMap = new Map;
 	}
 }
 
