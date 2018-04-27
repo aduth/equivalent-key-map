@@ -1,4 +1,4 @@
-### v0.1.2 (TBD)
+### v0.1.2 (2018-04-26)
 
 - Fix: Avoid conflicts on empty object and array keys.
 
