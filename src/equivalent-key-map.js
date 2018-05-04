@@ -11,6 +11,16 @@ class EquivalentKeyMap {
 	constructor( iterable ) {
 		this.clear();
 
+		if ( iterable instanceof EquivalentKeyMap ) {
+			// Map#forEach is only means of iterating with support for IE11.
+			const iterablePairs = [];
+			iterable._map.forEach( ( value, key ) => {
+				iterablePairs.push( [ key, value ] );
+			} );
+
+			iterable = iterablePairs;
+		}
+
 		if ( iterable != null ) {
 			for ( let i = 0; i < iterable.length; i++ ) {
 				this.set( iterable[ i ][ 0 ], iterable[ i ][ 1 ] );

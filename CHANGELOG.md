@@ -1,3 +1,7 @@
+### v0.2.0 (TBD)
+
+- New: Clone from existing `EquivalentKeyMap` instance by passing as constructor argument.
+
 ### v0.1.2 (2018-04-26)
 
 - Fix: Avoid conflicts on empty object and array keys.

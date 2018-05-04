@@ -97,6 +97,15 @@ describe( 'EquivalentKeyMap', () => {
 			expect( map.get( { a: 1 } ) ).to.equal( 10 );
 		} );
 
+		it( 'constructs as clone of EquivalentKeyMap', () => {
+			const original = new EquivalentKeyMap( [ [ { a: 1 }, 10 ] ] );
+			const copy = new EquivalentKeyMap( original );
+			copy.set( { a: 1 }, 20 );
+
+			expect( original.get( { a: 1 } ) ).to.equal( 10 );
+			expect( copy.get( { a: 1 } ) ).to.equal( 20 );
+		} );
+
 		it( 'does not attempt to initialize from null iterable argument', () => {
 			// Disable reason: Assume will throw if not respecting.
 			// eslint-disable-next-line no-new
