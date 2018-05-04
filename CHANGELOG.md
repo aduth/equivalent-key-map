@@ -1,6 +1,8 @@
 ### v0.2.0 (TBD)
 
 - New: Clone from existing `EquivalentKeyMap` instance by passing as constructor argument.
+- New: Added `forEach` method and `size` property.
+- Improved: Cache last calls to `get` and `set` for lookup shortcutting.
 
 ### v0.1.2 (2018-04-26)
 

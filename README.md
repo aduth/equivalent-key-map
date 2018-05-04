@@ -43,22 +43,26 @@ var map = new EquivalentKeyMap();
 
 ## Usage
 
-`EquivalentKeyMap` is intended to recreate the same API properties and methods available for `WeakMap`:
+`EquivalentKeyMap` is intended to recreate the same API properties and methods available for `Map`:
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
 
-**Note:** In a future version, `EquivalentKeyMap` may support all methods of a `Map`. That said, it may be considered strictly accurate to not allow `EquivalentKeyMap` to be iterable, as there is no singular value reference which can represent an object or array key, since keys are considered by equivalence.
+**Note:** Currently, only methods and properties supported by IE11 are implemented (see [Browser compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#Browser_compatibility)).
 
 ## Performance Considerations
 
 There is inevitably some overhead in tracking object and array references deeply, contrasted with the standard Map object. This is a compromise you should consider when deciding whether you need deep key equality behavior.
 
-That said, `EquivalentKeyMap` was implemented with performance in mind, and is significantly faster — and importantaly, more [correct](https://github.com/aduth/equivalent-key-map/blob/210f42bbd431c7c10da33d310cf56ef3b3ca96e7/test/index.js#L67-L71) — than a number of [alternative naive approaches](https://github.com/aduth/equivalent-key-map/tree/master/benchmark/impl).
+That said, `EquivalentKeyMap` was implemented with performance in mind, and is significantly faster — and importantaly, more [correct](https://github.com/aduth/equivalent-key-map/blob/210f42bbd431c7c10da33d310cf56ef3b3ca96e7/test/index.js#L67-L71) — than a number of [alternative naive approaches](https://github.com/aduth/equivalent-key-map/tree/master/benchmark/impl). It also optimizes for repeated calls with the same object reference, memoizing the latest invocation of `get` to shortcut lookups.
 
 ### Benchmarks
 
 The following benchmark results describe the behavior of `EquivalentMap#get` with keys of varying property lengths. 
 
+>**`EquivalentKeyMap (2 properties, equal reference) x 38,726,559 ops/sec ±1.25% (87 runs sampled)`**  
+>**`EquivalentKeyMap (8 properties, equal reference) x 43,395,727 ops/sec ±0.64% (91 runs sampled)`**  
+>**`EquivalentKeyMap (18 properties, equal reference) x 51,334,445 ops/sec ±0.54% (87 runs sampled)`**  
+>
 >**`EquivalentKeyMap (2 properties) x 2,419,300 ops/sec ±1.37% (85 runs sampled)`**  
 >**`EquivalentKeyMap (8 properties) x 1,362,012 ops/sec ±0.40% (90 runs sampled)`**  
 >**`EquivalentKeyMap (18 properties) x 569,431 ops/sec ±0.93% (88 runs sampled)`**  

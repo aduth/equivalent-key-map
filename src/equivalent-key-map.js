@@ -29,6 +29,15 @@ class EquivalentKeyMap {
 	}
 
 	/**
+	 * Accessor property returning the number of elements.
+	 *
+	 * @return {number} Number of elements.
+	 */
+	get size() {
+		return this._map.size;
+	}
+
+	/**
 	 * Add or update an element with a specified key and value.
 	 *
 	 * @param {*} key   The key of the element to add.
@@ -39,12 +48,14 @@ class EquivalentKeyMap {
 	set( key, value ) {
 		// Shortcut non-object-like to set on internal Map.
 		if ( key === null || typeof key !== 'object' ) {
-			this._flatMap.set( key, value );
+			this._map.set( key, value );
 			return this;
 		}
 
 		// Sort keys to ensure stable assignment into tree.
 		const properties = Object.keys( key ).sort();
+
+		const valuePair = [ key, value ];
 
 		// Tree by type to avoid conflicts on numeric object keys, empty value.
 		let map = Array.isArray( key ) ? this._arrayTreeMap : this._objectTreeMap;
@@ -66,7 +77,18 @@ class EquivalentKeyMap {
 			map = map.get( propertyValue );
 		}
 
-		map.set( '_ekm_value', value );
+		// If an _ekm_value exists, there was already an equivalent key. Before
+		// overriding, ensure that the old key reference is removed from map to
+		// avoid memory leak of accumulating equivalent keys. This is, in a
+		// sense, a poor man's WeakMap, while still enabling iterability.
+		const previousValuePair = map.get( '_ekm_value' );
+		if ( previousValuePair ) {
+			this._map.delete( previousValuePair[ 0 ] );
+		}
+
+		map.set( '_ekm_value', valuePair );
+		this._map.set( key, valuePair );
+
 		return this;
 	}
 
@@ -81,7 +103,13 @@ class EquivalentKeyMap {
 	get( key ) {
 		// Shortcut non-object-like to get from internal Map.
 		if ( key === null || typeof key !== 'object' ) {
-			return this._flatMap.get( key );
+			return this._map.get( key );
+		}
+
+		// Map keeps a reference to the last object-like key used to set the
+		// value, which can be used to shortcut immediately to the value.
+		if ( this._map.has( key ) ) {
+			return this._map.get( key )[ 1 ];
 		}
 
 		// Sort keys to ensure stable retrieval from tree.
@@ -105,7 +133,19 @@ class EquivalentKeyMap {
 			}
 		}
 
-		return map.get( '_ekm_value' );
+		const valuePair = map.get( '_ekm_value' );
+		if ( ! valuePair ) {
+			return;
+		}
+
+		// If reached, it implies that an object-like key was set with another
+		// reference, so delete the reference and replace with the current.
+		this._map.delete( valuePair[ 0 ] );
+		valuePair[ 0 ] = key;
+		map.set( '_ekm_value', valuePair );
+		this._map.set( key, valuePair );
+
+		return valuePair[ 1 ];
 	}
 
 	/**
@@ -118,7 +158,7 @@ class EquivalentKeyMap {
 	 */
 	has( key ) {
 		if ( key === null || typeof key !== 'object' ) {
-			return this._flatMap.has( key );
+			return this._map.has( key );
 		}
 
 		return Boolean( this.get( key ) );
@@ -145,10 +185,29 @@ class EquivalentKeyMap {
 	}
 
 	/**
+	 * Executes a provided function once per each key/value pair, in insertion
+	 * order.
+	 *
+	 * @param {Function} callback Function to execute for each element.
+	 * @param {*}        thisArg  Value to use as `this` when executing
+	 *                            `callback`.
+	 */
+	forEach( callback, thisArg = this ) {
+		this._map.forEach( ( value, key ) => {
+			// Unwrap value from object-like value pair.
+			if ( key !== null && typeof key === 'object' ) {
+				value = value[ 1 ];
+			}
+
+			callback.call( thisArg, value, key, this );
+		} );
+	}
+
+	/**
 	 * Removes all elements.
 	 */
 	clear() {
-		this._flatMap = new Map;
+		this._map = new Map;
 		this._arrayTreeMap = new Map;
 		this._objectTreeMap = new Map;
 	}

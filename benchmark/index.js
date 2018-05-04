@@ -29,15 +29,24 @@ const suite = new Benchmark.Suite;
 		const numKeyProperties = ( i ** 2 ) * 2;
 
 		const key = {};
+		const copy = {};
 
 		for ( let j = 0; j < numKeyProperties; j++ ) {
-			key[ String.fromCharCode( CHAR_CODE_LOWERCASE_A + j ) ] = j;
+			const letter = String.fromCharCode( CHAR_CODE_LOWERCASE_A + j );
+			key[ letter ] = j;
+			copy[ letter ] = j;
 		}
 
 		map.set( key, 0 );
 
+		if ( Impl === EquivalentKeyMap ) {
+			suite.add( `${ Impl.name } (${ numKeyProperties } properties, equal reference)`, () => {
+				map.get( key );
+			} );
+		}
+
 		suite.add( `${ Impl.name } (${ numKeyProperties } properties)`, () => {
-			map.get( key );
+			map.get( copy );
 		} );
 	}
 } );

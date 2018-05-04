@@ -91,6 +91,30 @@ describe( 'EquivalentKeyMap', () => {
 		expect( map.get( { b: 2, a: 1 } ) ).to.equal( 10 );
 	} );
 
+	it( 'replaces last set invocation', () => {
+		const map = new EquivalentKeyMap();
+		map.set( { a: 1 }, 10 );
+		const obj = { a: 1 };
+		map.set( obj, 20 );
+
+		const keys = [ ...map._map.keys() ];
+		expect( map.get( obj ) ).to.equal( 20 );
+		expect( keys ).to.have.lengthOf( 1 );
+		expect( keys[ 0 ] ).to.equal( obj );
+	} );
+
+	it( 'memoizes last get invocation', () => {
+		const map = new EquivalentKeyMap();
+		map.set( { a: 1 }, 10 );
+		map.get( { a: 1 } );
+		const obj = { a: 1 };
+		map.get( obj );
+
+		const keys = [ ...map._map.keys() ];
+		expect( keys ).to.have.lengthOf( 1 );
+		expect( keys[ 0 ] ).to.equal( obj );
+	} );
+
 	describe( '#constructor()', () => {
 		it( 'constructs from iterable key-value array', () => {
 			const map = new EquivalentKeyMap( [ [ { a: 1 }, 10 ] ] );
@@ -186,6 +210,37 @@ describe( 'EquivalentKeyMap', () => {
 			map.clear();
 
 			expect( map.get( { a: 1 } ) ).to.be.undefined;
+		} );
+	} );
+
+	describe( '#forEach()', () => {
+		it( 'executes callback over map entries', () => {
+			const map = new EquivalentKeyMap();
+			map.set( { a: 1 }, 10 );
+			map.set( 'a', 1 );
+
+			const pairs = [];
+			const thisArg = {};
+			map.forEach( function( value, key, _map ) {
+				expect( this ).to.equal( thisArg );
+				expect( _map ).to.equal( map );
+				pairs.push( [ key, value ] );
+			}, thisArg );
+
+			expect( pairs ).to.eql( [
+				[ { a: 1 }, 10 ],
+				[ 'a', 1 ],
+			] );
+		} );
+	} );
+
+	describe( '#size', () => {
+		it( 'returns size of map', () => {
+			const map = new EquivalentKeyMap();
+			map.set( { a: 1 }, 10 );
+			map.set( 'a', 1 );
+
+			expect( map.size ).to.equal( 2 );
 		} );
 	} );
 } );
