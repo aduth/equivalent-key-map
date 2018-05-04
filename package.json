@@ -1,6 +1,6 @@
 {
   "name": "equivalent-key-map",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A Map variant which allows for equivalent (deeply equal) object and array keys",
   "main": "equivalent-key-map.js",
   "files": [
