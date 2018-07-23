@@ -1,3 +1,7 @@
+### v0.2.1 (2018-07-23)
+
+- Fix: Resolve issue where cloning from another instance of `EquivalentKeyMap` could result in incorrect value assignment on path.
+
 ### v0.2.0 (2018-05-04)
 
 - New: Clone from existing `EquivalentKeyMap` instance by passing as constructor argument.
