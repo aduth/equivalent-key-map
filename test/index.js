@@ -116,6 +116,16 @@ describe( 'EquivalentKeyMap', () => {
 	} );
 
 	describe( '#constructor()', () => {
+		it( 'constructs from another map', () => {
+			const origin = new EquivalentKeyMap();
+			origin.set( [ 'a' ], 'b' );
+			const map = new EquivalentKeyMap( origin );
+			map.set( [ 'b' ], 'a' );
+
+			expect( map.get( [ 'a' ] ) ).to.equal( 'b' );
+			expect( map.get( [ 'b' ] ) ).to.equal( 'a' );
+		} );
+
 		it( 'constructs from iterable key-value array', () => {
 			const map = new EquivalentKeyMap( [ [ { a: 1 }, 10 ] ] );
 			expect( map.get( { a: 1 } ) ).to.equal( 10 );
