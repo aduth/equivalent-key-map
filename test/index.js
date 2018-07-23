@@ -116,28 +116,27 @@ describe( 'EquivalentKeyMap', () => {
 	} );
 
 	describe( '#constructor()', () => {
-		it( 'constructs from another map', () => {
-			const origin = new EquivalentKeyMap();
-			origin.set( [ 'a' ], 'b' );
-			const map = new EquivalentKeyMap( origin );
-			map.set( [ 'b' ], 'a' );
-
-			expect( map.get( [ 'a' ] ) ).to.equal( 'b' );
-			expect( map.get( [ 'b' ] ) ).to.equal( 'a' );
-		} );
-
 		it( 'constructs from iterable key-value array', () => {
 			const map = new EquivalentKeyMap( [ [ { a: 1 }, 10 ] ] );
 			expect( map.get( { a: 1 } ) ).to.equal( 10 );
 		} );
 
 		it( 'constructs as clone of EquivalentKeyMap', () => {
-			const original = new EquivalentKeyMap( [ [ { a: 1 }, 10 ] ] );
+			const original = new EquivalentKeyMap();
+			original.set( 'a', 10 );
+			original.set( { a: 1 }, 20 );
+			original.set( [ 'a' ], 30 );
 			const copy = new EquivalentKeyMap( original );
-			copy.set( { a: 1 }, 20 );
 
-			expect( original.get( { a: 1 } ) ).to.equal( 10 );
+			// Values copied.
+			expect( copy.get( 'a' ) ).to.equal( 10 );
 			expect( copy.get( { a: 1 } ) ).to.equal( 20 );
+			expect( copy.get( [ 'a' ] ) ).to.equal( 30 );
+
+			// Changes don't affect original.
+			copy.set( { a: 1 }, 30 );
+			expect( original.get( { a: 1 } ) ).to.equal( 20 );
+			expect( copy.get( { a: 1 } ) ).to.equal( 30 );
 		} );
 
 		it( 'does not attempt to initialize from null iterable argument', () => {
