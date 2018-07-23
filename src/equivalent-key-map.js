@@ -14,7 +14,7 @@ class EquivalentKeyMap {
 		if ( iterable instanceof EquivalentKeyMap ) {
 			// Map#forEach is only means of iterating with support for IE11.
 			const iterablePairs = [];
-			iterable._map.forEach( ( value, key ) => {
+			iterable.forEach( ( value, key ) => {
 				iterablePairs.push( [ key, value ] );
 			} );
 
