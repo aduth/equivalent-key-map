@@ -1,4 +1,60 @@
 /**
+ * Given an instance of EquivalentKeyMap, returns its internal value pair tuple
+ * for a key, if one exists. The tuple members consist of the last reference
+ * value for the key (used in efficient subsequent lookups) and the value
+ * assigned for the key at the leaf node.
+ *
+ * @param {EquivalentKeyMap} instance EquivalentKeyMap instance.
+ * @param {*} key                     The key for which to return value pair.
+ *
+ * @return {?Array} Value pair, if exists.
+ */
+function getValuePair( instance, key ) {
+	const { _map, _arrayTreeMap, _objectTreeMap } = instance;
+
+	// Map keeps a reference to the last object-like key used to set the
+	// value, which can be used to shortcut immediately to the value.
+	if ( _map.has( key ) ) {
+		return _map.get( key );
+	}
+
+	// Sort keys to ensure stable retrieval from tree.
+	const properties = Object.keys( key ).sort();
+
+	// Tree by type to avoid conflicts on numeric object keys, empty value.
+	let map = Array.isArray( key ) ? _arrayTreeMap : _objectTreeMap;
+
+	for ( let i = 0; i < properties.length; i++ ) {
+		const property = properties[ i ];
+
+		map = map.get( property );
+		if ( map === undefined ) {
+			return;
+		}
+
+		const propertyValue = key[ property ];
+		map = map.get( propertyValue );
+		if ( map === undefined ) {
+			return;
+		}
+	}
+
+	const valuePair = map.get( '_ekm_value' );
+	if ( ! valuePair ) {
+		return;
+	}
+
+	// If reached, it implies that an object-like key was set with another
+	// reference, so delete the reference and replace with the current.
+	_map.delete( valuePair[ 0 ] );
+	valuePair[ 0 ] = key;
+	map.set( '_ekm_value', valuePair );
+	_map.set( key, valuePair );
+
+	return valuePair;
+}
+
+/**
  * Variant of a Map object which enables lookup by equivalent (deeply equal)
  * object and array keys.
  */
@@ -106,46 +162,10 @@ class EquivalentKeyMap {
 			return this._map.get( key );
 		}
 
-		// Map keeps a reference to the last object-like key used to set the
-		// value, which can be used to shortcut immediately to the value.
-		if ( this._map.has( key ) ) {
-			return this._map.get( key )[ 1 ];
+		const valuePair = getValuePair( this, key );
+		if ( valuePair ) {
+			return valuePair[ 1 ];
 		}
-
-		// Sort keys to ensure stable retrieval from tree.
-		const properties = Object.keys( key ).sort();
-
-		// Tree by type to avoid conflicts on numeric object keys, empty value.
-		let map = Array.isArray( key ) ? this._arrayTreeMap : this._objectTreeMap;
-
-		for ( let i = 0; i < properties.length; i++ ) {
-			const property = properties[ i ];
-
-			map = map.get( property );
-			if ( map === undefined ) {
-				return;
-			}
-
-			const propertyValue = key[ property ];
-			map = map.get( propertyValue );
-			if ( map === undefined ) {
-				return;
-			}
-		}
-
-		const valuePair = map.get( '_ekm_value' );
-		if ( ! valuePair ) {
-			return;
-		}
-
-		// If reached, it implies that an object-like key was set with another
-		// reference, so delete the reference and replace with the current.
-		this._map.delete( valuePair[ 0 ] );
-		valuePair[ 0 ] = key;
-		map.set( '_ekm_value', valuePair );
-		this._map.set( key, valuePair );
-
-		return valuePair[ 1 ];
 	}
 
 	/**
@@ -161,7 +181,9 @@ class EquivalentKeyMap {
 			return this._map.has( key );
 		}
 
-		return Boolean( this.get( key ) );
+		// Test on the _presence_ of the pair, not its value, as even undefined
+		// can be a valid member value for a key.
+		return getValuePair( this, key ) !== undefined;
 	}
 
 	/**

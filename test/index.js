@@ -176,6 +176,31 @@ describe( 'EquivalentKeyMap', () => {
 
 			expect( result ).to.equal( true );
 		} );
+
+		it( 'returns false for non-included array key', () => {
+			const map = new EquivalentKeyMap();
+			const result = map.has( [ 'a', 1 ] );
+
+			expect( result ).to.equal( false );
+		} );
+
+		it( 'returns true for included array key', () => {
+			const map = new EquivalentKeyMap();
+			map.set( [ 'a', 1 ], 10 );
+			const result = map.has( [ 'a', 1 ] );
+
+			expect( result ).to.equal( true );
+		} );
+
+		it( 'returns true for included falsey value', () => {
+			[ false, null, 0, undefined ].forEach( ( value ) => {
+				const map = new EquivalentKeyMap();
+				map.set( [ 'a', 1 ], value );
+				const result = map.has( [ 'a', 1 ] );
+
+				expect( result ).to.equal( true );
+			} );
+		} );
 	} );
 
 	describe( '#set()', () => {
@@ -202,13 +227,22 @@ describe( 'EquivalentKeyMap', () => {
 			expect( result ).to.equal( false );
 		} );
 
-		it( 'returns the map instance for object key', () => {
+		it( 'returns true if removed object key', () => {
 			const map = new EquivalentKeyMap();
 			map.set( { a: 1 }, 10 );
 			const result = map.delete( { a: 1 } );
 
 			expect( result ).to.equal( true );
 			expect( map.get( { a: 1 } ) ).to.be.undefined;
+		} );
+
+		it( 'returns true if removed array key', () => {
+			const map = new EquivalentKeyMap();
+			map.set( [ 'a', 1 ], 10 );
+			const result = map.delete( [ 'a', 1 ] );
+
+			expect( result ).to.equal( true );
+			expect( map.get( [ 'a', 1 ] ) ).to.be.undefined;
 		} );
 	} );
 

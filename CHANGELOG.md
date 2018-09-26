@@ -1,3 +1,7 @@
+### v0.2.2 (Unreleased)
+
+- Fix: Resolve issue where `has` (and consequentally internal reuse such as in `delete`) would wrongly return `false` on keys whose values were assigned as [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy).
+
 ### v0.2.1 (2018-07-23)
 
 - Fix: Resolve issue where cloning from another instance of `EquivalentKeyMap` could result in incorrect value assignment on path.
