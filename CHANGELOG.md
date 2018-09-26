@@ -1,4 +1,4 @@
-### v0.2.2 (Unreleased)
+### v0.2.2 (2018-09-26)
 
 - Fix: Resolve issue where `has` (and consequentally internal reuse such as in `delete`) would wrongly return `false` on keys whose values were assigned as [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy).
 
