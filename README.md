@@ -104,7 +104,7 @@ npm run benchmark
 
 `EquivalentKeyMap` is implemented using `Map` and follows the corresponding [browser compatibility](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map#Browser_compatibility). Notably, this includes all modern browsers and Internet Explorer 11. The `Map` methods not supported by Internet Explorer 11 are not used by `EquivalentKeyMap` and can be safely overlooked.
 
-If you need support for older browsers, it's recommended that you use a polyfill such as [`core-js`](https://github.com/zloirock/core-js) or [polyfill.io](https://polyfill.io/v2/docs/).
+If you need support for older browsers, it's recommended that you use a polyfill such as [`core-js`](https://github.com/zloirock/core-js).
 
 ## License
 
